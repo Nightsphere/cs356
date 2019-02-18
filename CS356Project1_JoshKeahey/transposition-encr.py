@@ -2,6 +2,8 @@
 # in the validate_key function
 from collections import OrderedDict
 
+import numpy as np
+
 # This function is what's called when we want to create a 2D matrix with either the
 # plaintext or the ciphertext of the first matrix used to populate it
 def create_matrix(sentence):
@@ -27,6 +29,7 @@ def create_matrix(sentence):
             
     return sentence_matrix
 
+
 # The actual encrypting of the plaintext. We read in the keys from the keys file, assign
 # them to lists, and use those along with the sentence_matrix to write the ciphertext
 def encrypt_message(sentence_matrix):
@@ -43,18 +46,52 @@ def encrypt_message(sentence_matrix):
     key_1 = keys[0]
     key_1 = [c for c in key_1]
 
+    # Create a dummy array with all 0's for the first key numbering
     key_1_list = [0] * 10
     letter_2_number = 1
+
+    # Add the lowest number, starting with 1, depending on how soon the letter appears
+    # in the alphabet, and ending with 10
     for letter in alphabet:
         if letter in key_1:
             key_1_list[key_1.index(letter)] = letter_2_number
             letter_2_number = letter_2_number + 1
 
-    print(key_1_list)
+    test = np.array(sentence_matrix)
+    st = ""
+    index_counter = 1
+    while index_counter != 11:
+        if index_counter in key_1_list:
+            st += str(test[:,key_1_list.index(index_counter)])
+            index_counter = index_counter + 1
 
-    # TODO: ENCRYPT KEY 2 AFTER KEY 1!
+    ciphertext_sentence = st.replace("[","").replace("]","").replace("\'","").replace(" ","")
+
+    # Beginning of the second run-through of the second key
     key_2 = keys[1]
     key_2 = [c for c in key_2]
+
+    key_2_list = [0] * 10
+    letter_2_number = 1
+
+    key_2_sen_matrix = create_matrix(ciphertext_sentence)
+
+    for letter in alphabet:
+        if letter in key_2:
+            key_2_list[key_2.index(letter)] = letter_2_number
+            letter_2_number = letter_2_number + 1
+
+    test = np.array(key_2_sen_matrix)
+    st = ""
+    index_counter = 1
+    while index_counter != 11:
+        if index_counter in key_2_list:
+            st += str(test[:,key_2_list.index(index_counter)])
+            index_counter = index_counter + 1
+
+    ciphertext_sentence = st.replace("[","").replace("]","").replace("\'","").replace(" ","")
+
+    return ciphertext_sentence
 
 def retrieve_plaintext():
 
@@ -72,7 +109,14 @@ def retrieve_plaintext():
     # This is the finished 2D matrix with the sentence we want to encrypt residing in it
     sentence_matrix = create_matrix(sentence)
 
-    encrypt_message(sentence_matrix)
+    # This is the fully complete double transition ciphertext that we'll be writing
+    # to the AliceCipherText.txt file
+    encrypted_message = encrypt_message(sentence_matrix)
+    
+    wfile = open("AliceCipherText.txt", "w")
+    wfile.write(encrypted_message)
+
+    print(">>> Sentence succesfully encrypted!\n")
     
 
 # This function takes a key string and determines if the given key is usable
@@ -152,8 +196,11 @@ def get_keys():
 
 # This is the main function and calls the get_keys function for receiving the keys
 def main():
+
     get_keys()
+
     retrieve_plaintext()
+
 
 if __name__ == '__main__':
     main()
