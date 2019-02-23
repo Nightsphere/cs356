@@ -21,7 +21,6 @@ def create_matrix(sentence):
 def fill_matrix(sentence_matrix, message, key):
     
     alphabet = "abcdefghijklmnopqrstuvwxyz"
-    test = np.array(sentence_matrix)
 
     key_word = [c for c in key]
     key_list = [0] * 10
@@ -31,15 +30,17 @@ def fill_matrix(sentence_matrix, message, key):
         if letter in key_word:
             key_list[key_word.index(letter)] = letter_2_number
             letter_2_number = letter_2_number + 1
-    print(key_list)
 
-    message_counter = 0
+    letter_counter = 0
     index_counter = 1
-    while index_counter != 11:
-        if index_counter in key_list:
-            test[:,key_list.index(index_counter)] = message[message_counter] # This don't work
-            index_counter = index_counter + 1
-            message_counter = message_counter + 1
+
+    for col in range(10):
+        for row in range(len(sentence_matrix)):
+            sentence_matrix[row][key_list.index(index_counter)] = message[letter_counter]
+            letter_counter = letter_counter + 1
+        index_counter = index_counter + 1
+
+    return ''.join(str(letter) for col in sentence_matrix for letter in col)
 
 # Read the file that contains Alice's ciphertext
 def read_message():
@@ -56,6 +57,9 @@ def read_keys():
 # Where it all happens
 def main():
 
+    # Open Bob's plain text file so we can write to it when we are finished
+    plaintext_file = open("BobPlainText.txt","w")
+
     # Read the 2 keys in and assign them accordingly
     key_1, key_2 = read_keys()
 
@@ -67,7 +71,15 @@ def main():
     sentence_matrix = create_matrix(encrypted_message)
 
     # Populate the matrix with the encrypted message going left to right, top to bottom
-    fill_matrix(sentence_matrix, encrypted_message, key_2)
+    # and return the string of the first decrypted sentence using the second key first
+    first_decryption = fill_matrix(sentence_matrix, encrypted_message, key_2)
+
+    # Now enter the first decrypted sentence as a parameter to get the original message
+    # But first, recreate the sentence matrix as a dummy matrix that contains all zeros again
+    plaintext = fill_matrix(sentence_matrix, first_decryption, key_1)
+
+    # Write the plaintext to Bob's file
+    plaintext_file.write(plaintext)
 
 if __name__ == '__main__':
     main()

@@ -1,0 +1,17 @@
+p=569
+q=727
+n=569*727
+totient_n=568*726
+for (i=1; i<totient_n; i++) { if(gcd(i,totient_n)==1) {print i," "} }
+e=231533
+for(d=1;d<totient_n;d++) { if (d*e%totient_n==1) { print d,"\n"; break}}
+218645
+e*d%totient_n
+1
+print d
+m=6969
+m^e%n
+266258
+c=266258
+c^d%n
+6969
