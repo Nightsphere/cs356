@@ -24,7 +24,7 @@ def encrypt_with_bc(e, n, key_1, key_2):
         encode_e_n  = "{} {} {} {} {}\n".format(m, to_the, e, mod, n).encode('utf-8')
         stdout_data = p.communicate(input=encode_e_n)[0]
         m_ascii_key_1.append(stdout_data.decode('utf-8')[:-1])
-        print('.', end = '', flush = True)
+        print('\u2630', end = '', flush = True)
 
     m = ' '
     space = ord(m)
@@ -32,14 +32,14 @@ def encrypt_with_bc(e, n, key_1, key_2):
     encode_e_n  = "{} {} {} {} {}\n".format(space, to_the, e, mod, n).encode('utf-8')
     stdout_data = p.communicate(input=encode_e_n)[0]
     m_ascii_space.append(stdout_data.decode('utf-8')[:-1])
-    print('.', end = '', flush = True)
+    print('\u2630', end = '', flush = True)
 
     for m in key_2_ascii:
         p = Popen(['bc'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
         encode_e_n  = "{} {} {} {} {}\n".format(m, to_the, e, mod, n).encode('utf-8')
         stdout_data = p.communicate(input=encode_e_n)[0]
         m_ascii_key_2.append(stdout_data.decode('utf-8')[:-1])
-        print('.', end = '', flush = True)
+        print('\u2630', end = '', flush = True)
 
     print()
     return m_ascii_key_1, m_ascii_space, m_ascii_key_2
