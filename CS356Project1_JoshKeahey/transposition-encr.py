@@ -2,7 +2,11 @@
 # in the validate_key function
 from collections import OrderedDict
 
+# This is for creating the transposition matrix for the message we're trying to send
 import numpy as np
+
+# This is for rounding the number of row we're making UP as opposed to down
+import math
 
 # This function is what's called when we want to create a 2D matrix with either the
 # plaintext or the ciphertext of the first matrix used to populate it
@@ -14,7 +18,10 @@ def create_matrix(sentence):
 
     # It's easier to make a variable for how many number of rows we'll need for 
     # our sentence. The number of columns will always be 10
-    number_of_rows = round(len(sentence)/10)
+    number_of_rows = math.ceil(len(sentence)/10)
+
+    # Conver the sentence into all upper case
+    sentence = sentence.upper()
 
     # Make a dummy matrix with 0's that will be the size of the full matrix
     sentence_matrix = [[0 for col in range(10)] for row in range(number_of_rows)]

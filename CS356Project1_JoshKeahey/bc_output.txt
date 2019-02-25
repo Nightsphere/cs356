@@ -2,8 +2,11 @@ p=569
 q=727
 n=569*727
 totient_n=568*726
+# This loop goes through and finds if the gcd is 1, giving you all the possible
+# candidates for e. You can use any of them
 for (i=1; i<totient_n; i++) { if(gcd(i,totient_n)==1) {print i," "} }
 e=231533
+# This loop finds d, the private key, where there can only be ONE of. Use as d
 for(d=1;d<totient_n;d++) { if (d*e%totient_n==1) { print d,"\n"; break}}
 218645
 e*d%totient_n

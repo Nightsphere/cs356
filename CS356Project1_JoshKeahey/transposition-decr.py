@@ -45,13 +45,16 @@ def fill_matrix(sentence_matrix, message, key):
 # Read the file that contains Alice's ciphertext
 def read_message():
     rfile = open("AliceCipherText.txt", "r")
-    return rfile.read()
+    message = rfile.read()
+    rfile.close()
+    return message
 
 # Read in our two keys that was previously used to encrypt the incoming message
 def read_keys():
-    rfile = open("keys.txt", "r")
+    rfile = open("unwrappedKeys", "r")
     keys = rfile.read()
     keys = keys.split()
+    rfile.close()
     return keys[0], keys[1]
 
 # Where it all happens
@@ -80,6 +83,8 @@ def main():
 
     # Write the plaintext to Bob's file
     plaintext_file.write(plaintext)
+
+    print("\n>>> Message received!\n")
 
 if __name__ == '__main__':
     main()
