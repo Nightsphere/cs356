@@ -17,7 +17,7 @@ def decrypt_with_bc(d, n, wrapped_keys):
         encode_e_n  = "{} {} {} {} {}\n".format(c, to_the, d, mod, n).encode('utf-8')
         stdout_data = p.communicate(input=encode_e_n)[0]
         decrypted_keys.append(stdout_data.decode('utf-8')[:-1])
-        print('.', end = '', flush = True)
+        print('\u2630', end = '', flush = True)
 
     # Convert the ascii number back to letters using the chr function and return it
     decrypted_keys = [chr(int(c)) for c in decrypted_keys]
